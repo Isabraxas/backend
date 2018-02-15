@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.youtube.database.model.User;
 import com.youtube.database.service.UserService;
+import com.youtube.database.util.QueryResult;
 import com.youtube.database.util.RestResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -23,6 +26,7 @@ public class UserController {
     @RequestMapping(value="/saveOrUpdate", method = RequestMethod.POST)
     public RestResponse saveOrUpdate(@RequestBody String userJson)
                 throws  IOException {
+
         this.mapper = new ObjectMapper();
         User user= this.mapper.readValue(userJson, User.class);
 
@@ -34,18 +38,23 @@ public class UserController {
         return new RestResponse(HttpStatus.OK.value(),"Operacion exitosa");
     }
 
+    @RequestMapping(value = "/getUsers", method=RequestMethod.GET)
+    public List<User> getUsers(){
+        return this.userService.findAll();
+    }
+
     public boolean validate(User user){
         boolean isValid =true;
 
-        if(user.getFirstName() == null){
+        if(user.getFirstName() == null || user.getFirstName() == ""){
             isValid=false;
         }
 
-        if(user.getFirstSurname() == null){
+    if(StringUtils.trimToNull(user.getFirstSurname()) == null){
             isValid=false;
         }
 
-        if(user.getAddress() == null){
+        if(StringUtils.trimToNull(user.getAddress()) == null){
             isValid=false;
         }
 
