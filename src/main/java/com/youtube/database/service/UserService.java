@@ -19,6 +19,18 @@ public interface UserService {
      */
     List<User> findAll();
 
-
+    /**
+     * Elimina al usuario con el id recivido
+     * @param id
+     */
     void deleteUser(Long id);
+
+    void deleteUserById(Long id);
+
+    /**
+     *
+     * @param name
+     */
+    //User findByName(String name);
+    List<User> findByName(String name);
 }

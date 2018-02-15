@@ -55,6 +55,17 @@ public class UserController {
         this.userService.deleteUser(user.getId());
     }
 
+    @RequestMapping(value = "/deleteUserById/{id}", method=RequestMethod.GET)
+    public List<User> deleteUserById(@PathVariable Long id){
+        this.userService.deleteUserById(id);
+        return this.userService.findAll();
+    }
+
+    @RequestMapping(value = "/getByName/{name}", method=RequestMethod.GET)
+    public List<User> getByName(@PathVariable String name){
+        return this.userService.findByName(name);
+    }
+
     public boolean validate(User user){
         boolean isValid =true;
 
